@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  member
+  moderator
+  admin
+}
+
+model User {
+  id             Int       @id @default(autoincrement()) @map("id")
+  name           String    @map("name")
+  username       String    @map("username")
+  hashedPassword String    @map("hashed_password")
+  role           UserRole  @map("role")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  sessions     Session[]
+  posts        Post[]
+  postComments PostComment[]
+
+  @@map("users")
+}
+
+model Category {
+  id         Int       @id @default(autoincrement()) @map("id")
+  name       String    @map("name")
+  created_at DateTime? @default(now()) @map("created_at")
+  deleted_at DateTime? @map("deleted_at")
+
+  posts Post[]
+
+  @@map("categories")
+}
+
+model Post {
+  id      Int    @id @default(autoincrement()) @map("id")
+  title   String @map("title")
+  content String @map("content")
+  User    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  Int    @map("user_id")
+
+  created_at   DateTime? @default(now()) @map("created_at")
+  published_at DateTime? @map("published_at")
+  deleted_at   DateTime? @map("deleted_at")
+
+  category    Category? @relation(fields: [category_id], references: [id])
+  category_id Int       @map("category_id")
+
+  post_comments PostComment[]
+  post_tags     PostTag[]
+
+  @@map("posts")
+}
+
+model PostComment {
+  id             Int       @id @default(autoincrement()) @map("id")
+  content        String    @map("content")
+  commenter_name String    @map("commenter_name")
+  created_at     DateTime? @default(now()) @map("created_at")
+
+  User   User @relation(fields: [userId], references: [id])
+  userId Int  @map("user_id")
+
+  post    Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id Int  @map("post_id")
+
+  @@map("post_comments")
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement()) @map("id")
+  name      String    @map("name")
+  post_tags PostTag[]
+
+  @@map("tags")
+}
+
+model PostTag {
+  post    Post @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id Int  @map("post_id")
+
+  tag    Tag @relation(fields: [tag_id], references: [id])
+  tag_id Int @map("tag_id")
+
+  @@id([post_id, tag_id])
+  @@map("post_tags")
+}
+
+model Session {
+  id     Int  @id @default(autoincrement()) @map("id")
+  userId Int  @map("user_id")
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @map("updated_at")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+
+  @@map("sessions")
+}

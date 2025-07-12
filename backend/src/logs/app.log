@@ -1,0 +1,6 @@
+[INFO] 2025-03-31T08:03:29.004Z - createPost - Gönderi [object Object]
+[INFO] 2025-03-31T08:03:53.904Z - listPosts - İstek alındı
+[INFO] 2025-03-31T08:26:12.692Z - listPosts - İstek alındı
+[INFO] 2025-03-31T08:28:41.588Z - listPosts - İstek alındı
+[INFO] 2025-03-31T08:28:54.577Z - listComment - İstek alındı
+[INFO] 2025-03-31T08:28:57.058Z - listComment - İstek alındı
