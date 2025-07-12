@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import argon2 from 'argon2';
 import { CreateUserBody, UpdateUserBody } from "src/types/user_types";
-import argon2 from 'argon2'
 
 const prisma = new PrismaClient();
 
@@ -55,7 +55,7 @@ export class UserModel {
 
     static async getUser(filter: { id?: number, username?: string }) {
         try {
-            const { id, username }: { id: number, username: string } = filter;
+            const { id, username } = filter;
 
             // Parametre kontrolü
             if (!id && !username) {

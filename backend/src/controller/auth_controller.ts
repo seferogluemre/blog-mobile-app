@@ -1,12 +1,12 @@
-import { Request, Response } from 'express'
-import { AuthModel } from 'src/model/auth_model'
+import argon2 from "argon2";
+import dotenv from 'dotenv';
+import { Request, Response } from 'express';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { AuthModel } from 'src/model/auth_model';
+import { SessionModel } from 'src/model/session_model';
 import { UserModel } from 'src/model/user_model';
 import { LoginBody } from 'src/types/auth_types';
 import { logInfo, logWarn } from 'src/utils/loggerUtil';
-import argon2 from "argon2";
-import jwt, { JwtPayload } from 'jsonwebtoken'
-import dotenv from 'dotenv'
-import { SessionModel } from 'src/model/session_model';
 
 dotenv.config();
 
@@ -35,7 +35,7 @@ export class AuthController {
                 return;
             }
 
-            if (!user.hashedPassword || typeof user.hashedPassword !== 'string') {
+            if (!user || typeof user !== 'object' || !user.hasOwnProperty('hashedPassword') || typeof user.hashedPassword !== 'string') {
                 logWarn(`Login - Kullanıcı için hash bulunamadı: ${username}`);
                 console.error("Veritabanında kullanıcı için hashlenmiş şifre bulunamadı veya tipi yanlış.", user);
                 res.status(500).json({ message: "Sunucu yapılandırma hatası." });

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import argon2 from 'argon2';
 import { CreateRegisterBody } from "src/types/auth_types";
-import argon2 from 'argon2'
 
 const prisma = new PrismaClient
 
@@ -28,8 +28,6 @@ export class AuthModel {
             console.error("Hata tespit edildi", error)
         }
     }
-
-
 
 }
 
