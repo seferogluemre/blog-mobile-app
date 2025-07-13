@@ -90,6 +90,10 @@ export default function HomeScreen() {
     );
   };
 
+  const handleReadMore = (postId: number) => {
+    (navigation as any).navigate('BlogDetail', { postId });
+  };
+
   return (
     <LinearGradient
       colors={theme.gradient as any}
@@ -222,6 +226,7 @@ export default function HomeScreen() {
               
               <TouchableOpacity 
                 style={[styles.readMoreButton, { backgroundColor: theme.primary }]}
+                onPress={() => handleReadMore(post.id)}
               >
                 <Text style={styles.readMoreText}>Devamını Oku</Text>
               </TouchableOpacity>
