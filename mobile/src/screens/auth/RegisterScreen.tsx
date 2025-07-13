@@ -1,16 +1,16 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
@@ -24,9 +24,9 @@ export default function RegisterScreen() {
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
 
   const roles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Author', value: 'author' },
-    { label: 'Reader', value: 'reader' },
+    { label: 'Admin', value: 'admin', icon: 'security' },
+    { label: 'Author', value: 'author', icon: 'edit' },
+    { label: 'Reader', value: 'reader', icon: 'person' },
   ];
 
   const handleInputChange = (field: string, value: string) => {
@@ -59,7 +59,7 @@ export default function RegisterScreen() {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-back" size={24} color="#fff" />
+            <MaterialIcons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Create Account</Text>
         </View>
@@ -77,11 +77,11 @@ export default function RegisterScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Full Name</Text>
               <View style={styles.inputContainer}>
-                <Icon name="person" size={20} color="#9CA3AF" style={styles.inputIcon} />
+                <MaterialIcons name="person" size={20} color="#fff" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="Enter your full name"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   value={formData.fullName}
                   onChangeText={(value) => handleInputChange('fullName', value)}
                 />
@@ -92,11 +92,11 @@ export default function RegisterScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Username</Text>
               <View style={styles.inputContainer}>
-                <Icon name="account-circle" size={20} color="#9CA3AF" style={styles.inputIcon} />
+                <MaterialIcons name="account-circle" size={20} color="#fff" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="Choose a username"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   value={formData.username}
                   onChangeText={(value) => handleInputChange('username', value)}
                 />
@@ -107,11 +107,11 @@ export default function RegisterScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Password</Text>
               <View style={styles.inputContainer}>
-                <Icon name="lock" size={20} color="#9CA3AF" style={styles.inputIcon} />
+                <MaterialIcons name="lock" size={20} color="#fff" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="Create a password"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   secureTextEntry={!showPassword}
                   value={formData.password}
                   onChangeText={(value) => handleInputChange('password', value)}
@@ -120,10 +120,10 @@ export default function RegisterScreen() {
                   style={styles.eyeIcon}
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Icon
+                  <MaterialIcons
                     name={showPassword ? 'visibility' : 'visibility-off'}
                     size={20}
-                    color="#9CA3AF"
+                    color="#fff"
                   />
                 </TouchableOpacity>
               </View>
@@ -136,13 +136,27 @@ export default function RegisterScreen() {
                 style={styles.selectContainer}
                 onPress={() => setShowRoleDropdown(!showRoleDropdown)}
               >
-                <Text style={[styles.selectText, formData.role ? styles.selectedText : {}]}>
-                  {formData.role ? roles.find(r => r.value === formData.role)?.label : 'Select your role'}
-                </Text>
-                <Icon
+                <View style={styles.selectContent}>
+                  {formData.role ? (
+                    <View style={styles.selectedRole}>
+                      <MaterialIcons 
+                        name={roles.find(r => r.value === formData.role)?.icon as any} 
+                        size={18} 
+                        color="#fff" 
+                        style={styles.selectedIcon}
+                      />
+                      <Text style={styles.selectedText}>
+                        {roles.find(r => r.value === formData.role)?.label}
+                      </Text>
+                    </View>
+                  ) : (
+                    <Text style={styles.selectText}>Select your role</Text>
+                  )}
+                </View>
+                <MaterialIcons
                   name={showRoleDropdown ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
                   size={24}
-                  color="#9CA3AF"
+                  color="#fff"
                 />
               </TouchableOpacity>
               
@@ -157,6 +171,7 @@ export default function RegisterScreen() {
                         setShowRoleDropdown(false);
                       }}
                     >
+                      <MaterialIcons name={role.icon as any} size={18} color="#fff" style={styles.dropdownIcon} />
                       <Text style={styles.dropdownText}>{role.label}</Text>
                     </TouchableOpacity>
                   ))}
@@ -272,11 +287,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
   },
+  selectContent: {
+    flex: 1,
+  },
+  selectedRole: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selectedIcon: {
+    marginRight: 8,
+  },
   selectText: {
     fontSize: 16,
-    color: '#9CA3AF',
+    color: 'rgba(255, 255, 255, 0.7)',
   },
   selectedText: {
+    fontSize: 16,
     color: '#fff',
   },
   dropdown: {
@@ -287,10 +313,15 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  dropdownIcon: {
+    marginRight: 12,
   },
   dropdownText: {
     fontSize: 16,
