@@ -166,7 +166,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                         { backgroundColor: role === option.value ? theme.primaryLight : 'transparent' },
                       ]}
                       onPress={() => {
-                        setRole(option.value);
+                        setRole(option.value as "author" | "admin" | "reader");
                         setShowRoleDropdown(false);
                       }}
                     >
