@@ -1,4 +1,4 @@
-# 📱 OnlyJS - Modern Blog Mobile App
+Modern Blog Mobile App
 
 A modern, cross-platform mobile blog application built with React Native and Node.js. Features beautiful UI design, secure authentication, and a comprehensive blog management system.
 
