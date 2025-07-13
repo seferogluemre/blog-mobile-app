@@ -1,23 +1,28 @@
 import { useTheme } from '@/context/ThemeContext';
+import { BlogPost } from '@/types/blog';
+import { ProfileDropdownItem } from '@/types/user';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useState } from 'react';
 import {
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Modal,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 
 // Örnek blog verileri
-const blogPosts = [
+const blogPosts: BlogPost[] = [
   {
     id: 1,
     title: 'React Hooks ile State Yönetimi',
     description: 'Modern React uygulamalarında useState ve useEffect kullanımı hakkında detaylı rehber.',
-    tags: ['React', 'JavaScript', 'Frontend'],
+    tags: ['React', 'JavaScript', 'Frontend', 'Hooks', 'State'],
     commentCount: 12,
   },
   {
@@ -31,17 +36,63 @@ const blogPosts = [
     id: 3,
     title: 'Next.js ile Full Stack Geliştirme',
     description: 'Next.js framework\'ü ile modern web uygulamaları geliştirme rehberi.',
-    tags: ['Next.js', 'React', 'Full Stack'],
+    tags: ['Next.js', 'React', 'Full Stack', 'SSR', 'Performance', 'SEO'],
     commentCount: 15,
   },
 ];
 
 export default function HomeScreen() {
   const { isDarkMode, toggleTheme, theme } = useTheme();
+  const navigation = useNavigation();
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
+  const profileMenuItems: ProfileDropdownItem[] = [
+    {
+      label: 'Hesabım',
+      icon: 'person',
+      action: () => {
+        setShowProfileDropdown(false);
+        // Navigate to profile screen
+        console.log('Navigate to profile');
+      },
+    },
+    {
+      label: 'Çıkış yap',
+      icon: 'logout',
+      action: () => {
+        setShowProfileDropdown(false);
+        // Navigate back to welcome screen
+        navigation.navigate('Welcome' as never);
+      },
+    },
+  ];
+
+  const renderTags = (tags: string[]) => {
+    const displayTags = tags.slice(0, 3);
+    const hasMoreTags = tags.length > 3;
+
+    return (
+      <View style={styles.tagsContainer}>
+        {displayTags.map((tag, index) => (
+          <View 
+            key={index} 
+            style={[styles.tag, { backgroundColor: theme.primary }]}
+          >
+            <Text style={styles.tagText}>{tag}</Text>
+          </View>
+        ))}
+        {hasMoreTags && (
+          <View style={[styles.tag, { backgroundColor: theme.textSecondary }]}>
+            <Text style={styles.tagText}>...</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
 
   return (
     <LinearGradient
-      colors={theme.gradient}
+      colors={theme.gradient as any}
       style={styles.container}
     >
       <StatusBar
@@ -71,11 +122,58 @@ export default function HomeScreen() {
           
           <TouchableOpacity
             style={[styles.profileButton, { backgroundColor: theme.primary }]}
+            onPress={() => setShowProfileDropdown(true)}
           >
             <MaterialIcons name="person" size={20} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Profile Dropdown Modal */}
+      <Modal
+        visible={showProfileDropdown}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowProfileDropdown(false)}
+      >
+        <TouchableWithoutFeedback onPress={() => setShowProfileDropdown(false)}>
+          <View style={styles.modalOverlay}>
+            <View style={[styles.dropdownContainer, { top: 120, right: 20 }]}>
+              <View style={[
+                styles.dropdown,
+                { 
+                  backgroundColor: theme.cardBackground,
+                  borderColor: theme.border,
+                }
+              ]}>
+                {profileMenuItems.map((item, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[
+                      styles.dropdownItem,
+                      index < profileMenuItems.length - 1 && {
+                        borderBottomColor: theme.border,
+                        borderBottomWidth: 1,
+                      }
+                    ]}
+                    onPress={item.action}
+                  >
+                    <MaterialIcons 
+                      name={item.icon as any} 
+                      size={18} 
+                      color={theme.textSecondary} 
+                      style={styles.dropdownIcon}
+                    />
+                    <Text style={[styles.dropdownText, { color: theme.text }]}>
+                      {item.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
 
       {/* Header Section */}
       <View style={styles.headerSection}>
@@ -112,16 +210,7 @@ export default function HomeScreen() {
               {post.description}
             </Text>
             
-            <View style={styles.tagsContainer}>
-              {post.tags.map((tag, index) => (
-                <View 
-                  key={index} 
-                  style={[styles.tag, { backgroundColor: theme.primary }]}
-                >
-                  <Text style={styles.tagText}>{tag}</Text>
-                </View>
-              ))}
-            </View>
+            {renderTags(post.tags)}
             
             <View style={styles.blogFooter}>
               <View style={styles.commentInfo}>
@@ -183,6 +272,40 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
+  dropdownContainer: {
+    position: 'absolute',
+    zIndex: 1000,
+  },
+  dropdown: {
+    borderRadius: 12,
+    borderWidth: 1,
+    minWidth: 140,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  dropdownIcon: {
+    marginRight: 12,
+  },
+  dropdownText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
   headerSection: {
     alignItems: 'center',

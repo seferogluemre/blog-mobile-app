@@ -1,12 +1,7 @@
+import { FeatureCardProps } from "@/types/feature-card";
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-
-interface FeatureCardProps {
-  icon: string;
-  title: string;
-  description: string;
-}
 
 export const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => (
   <View style={styles.container}>

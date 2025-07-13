@@ -1,20 +1,5 @@
+import { ThemeColors, ThemeContextType } from '@/types/theme';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-
-interface ThemeColors {
-  background: string;
-  cardBackground: string;
-  text: string;
-  textSecondary: string;
-  primary: string;
-  border: string;
-  gradient: string[];
-}
-
-interface ThemeContextType {
-  isDarkMode: boolean;
-  toggleTheme: () => void;
-  theme: ThemeColors;
-}
 
 const lightTheme: ThemeColors = {
   background: '#ffffff',

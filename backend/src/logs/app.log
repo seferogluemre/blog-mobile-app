@@ -13,3 +13,28 @@
 [INFO] 2025-07-13T12:55:16.456Z - createCategory - Kategori ismi: Optimization
 [INFO] 2025-07-13T12:55:20.687Z - categoryList - İstek alındı
 [INFO] 2025-07-13T12:55:25.156Z - categoryList - İstek alındı
+[INFO] 2025-07-13T12:59:26.976Z - createUser - Oluşturulan kullanıcı [object Object]
+[INFO] 2025-07-13T12:59:44.018Z - createPost - Gönderi [object Object]
+[INFO] 2025-07-13T12:59:58.091Z - categoryList - İstek alındı
+[INFO] 2025-07-13T13:00:02.983Z - createPost - Gönderi [object Object]
+[INFO] 2025-07-13T13:00:29.545Z - createPost - Gönderi [object Object]
+[INFO] 2025-07-13T13:00:40.586Z - listPosts - İstek alındı
+[INFO] 2025-07-13T13:01:53.325Z - createComment - İstek alındı: [object Object]
+[INFO] 2025-07-13T13:02:21.191Z - createComment - İstek alındı: [object Object]
+[INFO] 2025-07-13T13:02:27.039Z - createComment - İstek alındı: [object Object]
+[INFO] 2025-07-13T13:02:39.933Z - listPosts - İstek alındı
+[INFO] 2025-07-13T13:02:54.180Z - createTag - Oluşturulan etiket [object Object]
+[INFO] 2025-07-13T13:02:57.448Z - createTag - Oluşturulan etiket [object Object]
+[INFO] 2025-07-13T13:03:01.281Z - createTag - Oluşturulan etiket [object Object]
+[INFO] 2025-07-13T13:03:04.278Z - createTag - Oluşturulan etiket [object Object]
+[INFO] 2025-07-13T13:03:09.718Z - createTag - Oluşturulan etiket [object Object]
+[INFO] 2025-07-13T13:03:13.392Z - createTag - Oluşturulan etiket [object Object]
+[INFO] 2025-07-13T13:03:19.238Z - createTag - Oluşturulan etiket [object Object]
+[INFO] 2025-07-13T13:03:25.121Z - createPostTag - Gönderi Etiketi ismi: [object Object]
+[INFO] 2025-07-13T13:03:33.815Z - createPostTag - Gönderi Etiketi ismi: [object Object]
+[INFO] 2025-07-13T13:03:36.928Z - createPostTag - Gönderi Etiketi ismi: [object Object]
+[INFO] 2025-07-13T13:03:39.624Z - createPostTag - Gönderi Etiketi ismi: [object Object]
+[INFO] 2025-07-13T13:03:41.414Z - createPostTag - Gönderi Etiketi ismi: [object Object]
+[INFO] 2025-07-13T13:03:43.900Z - createPostTag - Gönderi Etiketi ismi: [object Object]
+[INFO] 2025-07-13T13:03:46.997Z - createPostTag - Gönderi Etiketi ismi: [object Object]
+[INFO] 2025-07-13T13:03:52.436Z - createPostTag - Gönderi Etiketi ismi: [object Object]
