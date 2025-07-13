@@ -4,7 +4,9 @@ export interface ThemeColors {
   text: string;
   textSecondary: string;
   primary: string;
+  primaryLight: string;
   border: string;
+  inputBackground: string;
   gradient: string[];
 }
 

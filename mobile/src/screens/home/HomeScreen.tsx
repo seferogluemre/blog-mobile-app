@@ -48,8 +48,7 @@ export default function HomeScreen() {
       icon: 'person',
       action: () => {
         setShowProfileDropdown(false);
-        // Navigate to profile screen
-        console.log('Navigate to profile');
+        (navigation as any).navigate('Profile');
       },
     },
     {
