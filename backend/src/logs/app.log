@@ -4,3 +4,12 @@
 [INFO] 2025-03-31T08:28:41.588Z - listPosts - İstek alındı
 [INFO] 2025-03-31T08:28:54.577Z - listComment - İstek alındı
 [INFO] 2025-03-31T08:28:57.058Z - listComment - İstek alındı
+[INFO] 2025-07-13T12:54:45.376Z - createCategory - Kategori ismi: Devops
+[INFO] 2025-07-13T12:54:51.659Z - createCategory - Kategori ismi: Mobile
+[INFO] 2025-07-13T12:54:54.892Z - createCategory - Kategori ismi: Frontend
+[INFO] 2025-07-13T12:55:01.613Z - createCategory - Kategori ismi: UI/UX
+[INFO] 2025-07-13T12:55:07.737Z - createCategory - Kategori ismi: Backend
+[INFO] 2025-07-13T12:55:11.669Z - createCategory - Kategori ismi: FullStack
+[INFO] 2025-07-13T12:55:16.456Z - createCategory - Kategori ismi: Optimization
+[INFO] 2025-07-13T12:55:20.687Z - categoryList - İstek alındı
+[INFO] 2025-07-13T12:55:25.156Z - categoryList - İstek alındı

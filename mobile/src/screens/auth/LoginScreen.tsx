@@ -29,8 +29,12 @@ export default function LoginScreen() {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
-    // Backend API call yapılacak
+    
+    // Simulating successful login
     console.log('Login data:', formData);
+    
+    // Navigate to Home screen after successful login
+    navigation.navigate('Home' as never);
   };
 
   return (
