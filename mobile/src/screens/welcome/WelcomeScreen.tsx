@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { FeatureCard } from "./components/FeatureCard";
 
 export default function WelcomeScreen() {
@@ -17,17 +17,15 @@ export default function WelcomeScreen() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.contentContainer}>
           {/* Başlık */}
-          <Text style={styles.title}>OnlyJS</Text>
+          <Text style={styles.title}>OnlyJS Blog Platform</Text>
           
           {/* Logo */}
-          <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>{">"}</Text>
-          </View>
+          <Image source={{ uri: "https://onlyjs.com/logo-badge-dark.png" }} style={{ width: 200, height: 70 ,objectFit:"contain"}} />
           
           {/* Hoşgeldin */}
-          <Text style={styles.welcomeTitle}>Hoş Geldin!</Text>
-          <Text style={styles.welcomeSubtitle}>
-            Basit blog uygulamamıza hoş geldin
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#fff', marginTop: 20, marginBottom: 10 }}>Hoş Geldin!</Text>
+          <Text style={{ fontSize: 16, color: '#fff',marginBottom:10 }}>
+             Blog uygulamamıza hoş geldin
           </Text>
           
           {/* Kartlar */}
