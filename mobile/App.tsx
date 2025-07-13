@@ -1,3 +1,4 @@
+import RegisterScreen from "@/screens/auth/RegisterScreen";
 import WelcomeScreen from "@/screens/welcome/WelcomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,7 +12,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
-        {/* <Stack.Screen name="Register" component={RegisterScreen} /> */}
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
