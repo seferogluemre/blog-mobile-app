@@ -26,6 +26,12 @@
       "@types": [
         "./src/types/*"
       ],
+      "@services":[
+        "./src/services/*"
+      ],
+      "@constants":[
+        "./src/constants/*"
+      ]
     }
   },
   "include": [
