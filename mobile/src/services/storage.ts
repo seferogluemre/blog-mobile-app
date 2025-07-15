@@ -1,6 +1,6 @@
 import { STORAGE_KEYS } from "@/constants/storage"
-import { User } from "@/types/auth"
-import { AuthTokens } from "@/types/user"
+import { AuthTokens } from "@/types/auth"
+import { User } from "@/types/user"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 

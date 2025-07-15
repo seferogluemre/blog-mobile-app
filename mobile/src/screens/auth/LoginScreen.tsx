@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   ScrollView,
   StyleSheet,
@@ -11,9 +12,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const { login, isLoading } = useAuth();
+  
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -24,17 +28,24 @@ export default function LoginScreen() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!formData.username || !formData.password) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
     
-    // Simulating successful login
-    console.log('Login data:', formData);
-    
-    // Navigate to Home screen after successful login
-    navigation.navigate('Home' as never);
+    const result = await login({
+      username: formData.username,
+      password: formData.password,
+    });
+
+    if (result.success) {
+      // Login başarılı - Home'a yönlendir
+      navigation.navigate('Home' as never);
+    } else {
+      // Login başarısız - hata göster
+      Alert.alert('Login Failed', result.error || 'Something went wrong');
+    }
   };
 
   return (
@@ -79,6 +90,7 @@ export default function LoginScreen() {
                   placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   value={formData.username}
                   onChangeText={(value) => handleInputChange('username', value)}
+                  editable={!isLoading}
                 />
               </View>
             </View>
@@ -95,10 +107,12 @@ export default function LoginScreen() {
                   secureTextEntry={!showPassword}
                   value={formData.password}
                   onChangeText={(value) => handleInputChange('password', value)}
+                  editable={!isLoading}
                 />
                 <TouchableOpacity
                   style={styles.eyeIcon}
                   onPress={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
                 >
                   <MaterialIcons
                     name={showPassword ? 'visibility' : 'visibility-off'}
@@ -110,14 +124,25 @@ export default function LoginScreen() {
             </View>
 
             {/* Login Button */}
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>Sign In</Text>
+            <TouchableOpacity 
+              style={[styles.loginButton, isLoading && styles.disabledButton]} 
+              onPress={handleLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#8B5CF6" size="small" />
+              ) : (
+                <Text style={styles.loginButtonText}>Sign In</Text>
+              )}
             </TouchableOpacity>
 
             {/* Sign Up Link */}
             <View style={styles.signUpContainer}>
               <Text style={styles.signUpText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Register' as never)}>
+              <TouchableOpacity 
+                onPress={() => navigation.navigate('Register' as never)}
+                disabled={isLoading}
+              >
                 <Text style={styles.signUpLink}>Sign up</Text>
               </TouchableOpacity>
             </View>
@@ -212,6 +237,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 12,
+  },
+  disabledButton: {
+    opacity: 0.7,
   },
   loginButtonText: {
     fontSize: 18,

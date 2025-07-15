@@ -1,3 +1,5 @@
+import { User, UserRole } from "./user";
+
 export interface LoginData {
   username: string;
   password: string;
@@ -15,11 +17,33 @@ export interface AuthResponse {
   user: User;
 }
 
-export interface User {
-  id: number;
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface LoginRequest {
   username: string;
-  fullName: string;
-  email?: string;
-  role: 'admin' | 'author' | 'reader';
-  createdAt: string;
-} 
+  password: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  username: string;
+  password: string;
+  role: UserRole;
+}
+
+export interface LoginResponse {
+  message: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RegisterResponse {
+  data: User;
+}
+
+export interface AuthUser extends User {
+  tokens: AuthTokens;
+}

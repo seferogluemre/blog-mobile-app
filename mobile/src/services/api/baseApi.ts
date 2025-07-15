@@ -48,7 +48,7 @@ class BaseApiService {
                             const response = axios.post(
                                 `${API_ENDPOINTS.BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`, { refreshToken }
                             )
-                            const { accessToken, refreshToken: newRefreshToken } = response.data;
+                            const { accessToken, refreshToken: newRefreshToken } = (await response).data;
 
                             await StorageService.setAccessToken(accessToken);
 
@@ -64,15 +64,9 @@ class BaseApiService {
                             return Promise.reject(error as Error)
                         }
                     }
-
-
                 }
-
             }
         )
-
-
-
 
     }
 

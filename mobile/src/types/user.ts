@@ -1,4 +1,3 @@
-import { User } from "./auth";
 
 // Profile Typess
 export type UserRole = 'admin' | 'author' | 'reader';
@@ -43,34 +42,11 @@ export interface ProfileInfoItem {
   value: string;
 }
 
-// --------- Authentication Types -------
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface RegisterRequest {
-  name: string;
+export interface User {
+  id: number;
   username: string;
-  password: string;
-  role: UserRole;
-}
-
-export interface LoginResponse {
-  message: string;
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface RegisterResponse {
-  data: User;
-}
-
-export interface AuthUser extends User {
-  tokens: AuthTokens;
-}
+  fullName: string;
+  email?: string;
+  role: 'admin' | 'author' | 'reader';
+  createdAt: string;
+} 

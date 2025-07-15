@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   ScrollView,
   StyleSheet,
@@ -11,35 +12,59 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useAuth } from '../../hooks/useAuth';
+import { UserRole } from '../../types/user';
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
+  const { register, isLoading } = useAuth();
+  
   const [formData, setFormData] = useState({
     fullName: '',
     username: '',
     password: '',
-    role: '',
+    role: '' as UserRole | '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
 
   const roles = [
-    { label: 'Admin', value: 'admin', icon: 'security' },
-    { label: 'Author', value: 'author', icon: 'edit' },
-    { label: 'Reader', value: 'reader', icon: 'person' },
+    { label: 'Admin', value: 'admin' as UserRole, icon: 'security' },
+    { label: 'Author', value: 'author' as UserRole, icon: 'edit' },
+    { label: 'Reader', value: 'reader' as UserRole, icon: 'person' },
   ];
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | UserRole) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!formData.fullName || !formData.username || !formData.password || !formData.role) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
-    // Backend API call yapılacak
-    console.log('Register data:', formData);
+
+    const result = await register({
+      name: formData.fullName,
+      username: formData.username,
+      password: formData.password,
+      role: formData.role as UserRole,
+    });
+
+    if (result.success) {
+      Alert.alert(
+        'Registration Successful', 
+        'Your account has been created. Please login.',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Login' as never),
+          }
+        ]
+      );
+    } else {
+      Alert.alert('Registration Failed', result.error || 'Something went wrong');
+    }
   };
 
   return (
@@ -84,6 +109,7 @@ export default function RegisterScreen() {
                   placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   value={formData.fullName}
                   onChangeText={(value) => handleInputChange('fullName', value)}
+                  editable={!isLoading}
                 />
               </View>
             </View>
@@ -99,6 +125,7 @@ export default function RegisterScreen() {
                   placeholderTextColor="rgba(255, 255, 255, 0.7)"
                   value={formData.username}
                   onChangeText={(value) => handleInputChange('username', value)}
+                  editable={!isLoading}
                 />
               </View>
             </View>
@@ -115,10 +142,12 @@ export default function RegisterScreen() {
                   secureTextEntry={!showPassword}
                   value={formData.password}
                   onChangeText={(value) => handleInputChange('password', value)}
+                  editable={!isLoading}
                 />
                 <TouchableOpacity
                   style={styles.eyeIcon}
                   onPress={() => setShowPassword(!showPassword)}
+                  disabled={isLoading}
                 >
                   <MaterialIcons
                     name={showPassword ? 'visibility' : 'visibility-off'}
@@ -135,6 +164,7 @@ export default function RegisterScreen() {
               <TouchableOpacity
                 style={styles.selectContainer}
                 onPress={() => setShowRoleDropdown(!showRoleDropdown)}
+                disabled={isLoading}
               >
                 <View style={styles.selectContent}>
                   {formData.role ? (
@@ -170,6 +200,7 @@ export default function RegisterScreen() {
                         handleInputChange('role', role.value);
                         setShowRoleDropdown(false);
                       }}
+                      disabled={isLoading}
                     >
                       <MaterialIcons name={role.icon as any} size={18} color="#fff" style={styles.dropdownIcon} />
                       <Text style={styles.dropdownText}>{role.label}</Text>
@@ -180,14 +211,25 @@ export default function RegisterScreen() {
             </View>
 
             {/* Register Button */}
-            <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-              <Text style={styles.registerButtonText}>Create Account</Text>
+            <TouchableOpacity 
+              style={[styles.registerButton, isLoading && styles.disabledButton]} 
+              onPress={handleRegister}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#8B5CF6" size="small" />
+              ) : (
+                <Text style={styles.registerButtonText}>Create Account</Text>
+              )}
             </TouchableOpacity>
 
             {/* Sign In Link */}
             <View style={styles.signInContainer}>
               <Text style={styles.signInText}>Already have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>
+              <TouchableOpacity 
+                onPress={() => navigation.navigate('Login' as never)}
+                disabled={isLoading}
+              >
                 <Text style={styles.signInLink}>Sign in</Text>
               </TouchableOpacity>
             </View>
@@ -353,5 +395,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#fff',
+  },
+  disabledButton: {
+    opacity: 0.7,
   },
 });

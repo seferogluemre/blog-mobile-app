@@ -1,8 +1,8 @@
-import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "@/types/user";
-import { api } from "./baseApi";
 import { API_ENDPOINTS } from "@/constants/storage";
+import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "@/types/auth";
+import { User } from "@/types/user";
 import { StorageService } from "../storage";
-import { User } from "@/types/auth";
+import { api } from "./baseApi";
 
 export class AuthApiService {
     static async login(credentials: LoginRequest): Promise<LoginResponse> {
@@ -17,7 +17,6 @@ export class AuthApiService {
         const response = api.post<RegisterResponse>(API_ENDPOINTS.BASE_URL, data);
         return (await response).data
     }
-
 
     static async logout(): Promise<void> {
         const refreshToken = await StorageService.getRefreshToken();
